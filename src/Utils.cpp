@@ -15,3 +15,8 @@ double standardCauchyDistribution() {
     std::cauchy_distribution<double> cauchyDistribution(0.0, 1.0);
     return cauchyDistribution(generator);
 }
+
+double optimizedFunction(double* x){
+    //return sin(2*x[0] ) + sin(2*x[1]) + x[0]*x[0] + x[1]*x[1];
+    return sin(x[0]) + x[0]*x[0];
+}

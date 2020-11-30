@@ -4,15 +4,17 @@
 #define DIMENSIONS 1
 
 
-#include <Utils.hpp>
+
+#include <iostream>
 
 class Chromosome {
     double gene[DIMENSIONS];
 public:
     Chromosome() {};
-    Chromosome(double gene[DIMENSIONS]) {for(int i = 0; i < DIMENSIONS; i++) this->gene[i] = gene[i];};
-    void generateRandomGenes(double minValue, double maxValue){for(int i = 0; i < DIMENSIONS; i++) this->gene[i] = randomInRange(minValue, maxValue);};
-    double* getGene() {return gene;}
+    Chromosome(double gene[DIMENSIONS]);
+    void generateRandomGenes(double minValue, double maxValue);
+    double* getGene();
 };
 
+std::ostream& operator<<(std::ostream& os, Chromosome chromosome);
 #endif // CHROMOSOME_HPP

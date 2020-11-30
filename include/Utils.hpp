@@ -5,5 +5,6 @@
 
 double randomInRange(double min, double max);
 double standardCauchyDistribution();
+double optimizedFunction(double* x);
 
 #endif
