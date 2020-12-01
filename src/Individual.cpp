@@ -40,7 +40,9 @@ Individual Individual::mutate(double sigma) {
         childGenes[i] = chromosome[1].getGene()[i] + sigma * standardCauchyDistribution();
     }
     Chromosome childChromosome(childGenes);
-  //  Individual child(childChromosome);
+    //Individual child(childChromosome);
+    Individual child();
+    
     return child;
 }
 
