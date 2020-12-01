@@ -9,9 +9,15 @@
 #define MAX_GEN_VALUE 3.5
 #define MIN_GEN_VALUE -3.5
 #define INITIAL_SIGMA 1
+#define NO_OF_INDIVIDUALS 60;
+#define LAMBDA 20;
 
 #include "Individual.hpp"
 #include <vector>
+#include <iostream>
+#include <memory>
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
 
 class Population1plus1{
     Individual individuals;
@@ -22,6 +28,27 @@ public:
     Population1plus1();
     void newGeneration();
     Individual simulate();
+
+};
+
+class Population_lambdaplus1{
+   
+   std::vector<std::shared_ptr<Individual> >individuals;
+   std::vector<std::shared_ptr<Individual> >parents_of_new_children;
+
+    int betterChildCounter;
+    int generationsLeft;
+    double sigma;
+
+    void choose_new_parents();
+    void breed_and_mutate();
+    void sort_and_cut();
+
+public:
+    Population_lambdaplus1();
+    void newGeneration();
+    Individual simulate();
+
 };
 
 #endif // POPULATION_HPP
