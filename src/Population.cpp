@@ -34,15 +34,22 @@ Individual Population1plus1::simulate() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool sort_by_fittnes(const std::shared_ptr<Individual> lhs, const std::shared_ptr<Individual> rhs)
+{
+return lhs->calculateFitness()> rhs->calculateFitness();
+
+}
+
+
 void Population_lambdaplus1::sort_and_cut()
 {
     //sorting
+   sort(individuals.begin(), individuals.end(), sort_by_fittnes);
 
-   sort(vec.begin(), vec.end(), [](const MyStruct& lhs, const MyStruct& rhs) {
-      return lhs.key < rhs.key;
-   });
-
-   //delete worst elements
+for(int i = individuals.size()-NO_OF_INDIVIDUALS;i>0;--i)
+{
+    individuals.pop_back();//usuwamy lambda najgorszych osobnikow
+}
 
 }
 Population_lambdaplus1::Population_lambdaplus1() {
@@ -64,12 +71,12 @@ for(int i=0 ; i<=LAMBDA ; ++i)
     parents_of_new_children.push_back(individuals[parent_2]);
 }
 }
-void Population_lambdaplus1::breed_and_mutate()
+void Population_lambdaplus1::breed_and_mutate() //Funkcja bierze dwóch wyznaczonych rodziców i tworzy nowe dziecko
 {
 
 for(int i=0 ; i<=LAMBDA ; ++i)
 {
-    //tutaj trzeba trochę magii
+    //tutaj trzeba trochę magii wskaźnikowej.
 individuals.push_back(
                         std::shared_ptr<Individual> A(
                         parents_of_new_children[i]->mate(
@@ -102,6 +109,7 @@ Individual Population_lambdaplus1::simulate() {
         std::cout << "Iteracja nr " << ITERATIONS - generationsLeft << " osobnik to " << individuals.getChromosome() << std::endl
     <<"O wartosci: " << individuals[0]->getFitness() << std::endl;
     }
-    return ;
+    return *individuals[0].get();   //zwracamy najlepszego
+
 }
 

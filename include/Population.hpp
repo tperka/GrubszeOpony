@@ -18,6 +18,7 @@
 #include <memory>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <algorithm>    /* sort */
 
 class Population1plus1{
     Individual individuals;
@@ -43,6 +44,7 @@ class Population_lambdaplus1{
     void choose_new_parents();
     void breed_and_mutate();
     void sort_and_cut();
+    void eval_individuals();
 
 public:
     Population_lambdaplus1();
