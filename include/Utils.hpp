@@ -3,7 +3,8 @@
 
 
 
-double randomInRange(double min, double max);
+double randomFloatInRange(double min, double max);
+int randomIntInRange(int min, int max);
 double standardCauchyDistribution();
 double optimizedFunction(double* x);
 

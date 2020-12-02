@@ -1,17 +1,18 @@
 #ifndef CHROMOSOME_HPP
 #define CHROMOSOME_HPP
 
-#define DIMENSIONS 1
+#define DIMENSIONS 2
 
 
 
 #include <iostream>
-
+#include <vector>
 class Chromosome {
     double gene[DIMENSIONS];
 public:
     Chromosome() {};
     Chromosome(double gene[DIMENSIONS]);
+    Chromosome(std::vector<double> gene);
     void generateRandomGenes(double minValue, double maxValue);
     double* getGene();
 };

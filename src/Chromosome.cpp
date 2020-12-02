@@ -1,6 +1,11 @@
 #include "Chromosome.hpp"
 #include "Utils.hpp"
 
+Chromosome::Chromosome(std::vector<double> gene) {
+    for(int i = 0; i < DIMENSIONS; i++) 
+        this->gene[i] = gene[i];
+}
+
 Chromosome::Chromosome(double gene[DIMENSIONS]) {
     for(int i = 0; i < DIMENSIONS; i++) 
         this->gene[i] = gene[i];
@@ -8,7 +13,7 @@ Chromosome::Chromosome(double gene[DIMENSIONS]) {
 
 void Chromosome::generateRandomGenes(double minValue, double maxValue) {
     for(int i = 0; i < DIMENSIONS; i++) 
-        gene[i] = randomInRange(minValue, maxValue);
+        gene[i] = randomFloatInRange(minValue, maxValue);
 }
 
 double* Chromosome::getGene() {

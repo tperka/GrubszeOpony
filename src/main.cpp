@@ -1,11 +1,11 @@
 #include <iostream>
 #include "Population.hpp"
+#include "Utils.hpp"
 
 int main(int argc, const char** argv) {
-    Population1plus1 population;
+    Population_lambdaplus1 population;
     Individual best = population.simulate();
-    std::cout << "Minimum lokalnym naszej funkcji jest: " << best.getChromosome() << std::endl
-    <<"O wartosci: " << best.getFitness() << std::endl;
+    std::cout << "Najlepszym osobnikiem jest: " << best << std::endl;
 
     return 0;
 }

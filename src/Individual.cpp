@@ -3,10 +3,19 @@
 #include "Utils.hpp"
 
 Individual::Individual() {
-    for(int i = 0; i < N_OF_CHROMOSOMES; i++)
-        chromosome[i].generateRandomGenes(MIN_GEN_VALUE, MAX_GEN_VALUE);
+    chromosome[0].generateRandomGenes(MIN_GEN_VALUE, MAX_GEN_VALUE);
+    chromosome[1].generateRandomGenes(MIN_SIGMA_VALUE, MAX_SIGMA_VALUE);
     
-    this->fitness = calculateFitness();
+    fitness = calculateFitness();
+    normalizedFitness = 0;
+
+}
+
+Individual::Individual(const Individual &individual) {
+    fitness = individual.fitness;
+    normalizedFitness = individual.normalizedFitness;
+    for(int i = 0; i < N_OF_CHROMOSOMES; i++) 
+        chromosome[i] = individual.chromosome[i];
 }
 
 Individual::Individual(Chromosome chromosome[N_OF_CHROMOSOMES]) {
@@ -14,40 +23,56 @@ Individual::Individual(Chromosome chromosome[N_OF_CHROMOSOMES]) {
         this->chromosome[i] = chromosome[i];
 
     fitness = calculateFitness();
+    normalizedFitness = 0;
 }
 
-Individual Individual::mate(Individual partner){
+std::shared_ptr<Individual> Individual::mate(std::shared_ptr<Individual> partner){
+    //żeby kompilator nie przerywał wykonania programu przez podejrzenie przeładowania stosu
+    if(partner.get() == this) {
+        return partner;
+    }
+    
     Chromosome childChromosomes[N_OF_CHROMOSOMES];
     double childGenes[DIMENSIONS];
     int lengthOfChromosome = DIMENSIONS;
-    double weight = randomInRange(0.0, 1.0);
+    double weight = randomFloatInRange(0.0, 1.0);
+    
     for(int i = 0; i < N_OF_CHROMOSOMES; i++) {
         for(int j = 0; i < lengthOfChromosome; i++) {
-            childGenes[j] = weight * chromosome[i].getGene()[j] + (1.0 - weight) * partner.getChromosome()[i].getGene()[j];
+            childGenes[j] = weight * chromosome[i].getGene()[j] + (1.0 - weight) * partner->getChromosome()[i].getGene()[j];
         }
-        Chromosome temp(childGenes);
-        childChromosomes[i] = temp;
+
+        childChromosomes[i] = Chromosome(childGenes);
     }
     
-    Individual child(childChromosomes);
+    std::shared_ptr<Individual> child(new Individual(childChromosomes));
     return child;
 }
 
-Individual Individual::mutate(double sigma) {
-    //TODO: strona 74 skryptu
+void Individual::mutate() {
+    //strona 74 skryptu Podstawy Sztucznej Inteligencji autorstwa Pawła Wawrzyńskiego.
+    double childDistributionGenes[DIMENSIONS];
     double childGenes[DIMENSIONS];
+    double tauprim = 1/sqrt(2*DIMENSIONS);
+    double tau = 1/sqrt(sqrt(DIMENSIONS));
+    double ksi = standardCauchyDistribution();
+    double ksi_i, ny_i;     //używane do losowania dla każdego wymiaru wektora genów oddzielnie
+
     for(int i = 0; i < DIMENSIONS; i++) {
-        childGenes[i] = chromosome[1].getGene()[i] + sigma * standardCauchyDistribution();
+        ksi_i = standardCauchyDistribution();
+        childDistributionGenes[i] = chromosome[N_OF_CHROMOSOMES - 1].getGene()[i] * exp(tauprim*ksi + tau*ksi_i);   //w naszym przypadku ostatni chromosom jest tablicą odchyleń standardowych rozkładów używanych do mutacji.
+        
+        ny_i = standardCauchyDistribution();
+        childGenes[i] = chromosome[0].getGene()[i] * childDistributionGenes[i] * ny_i;
     }
-    Chromosome childChromosome(childGenes);
-    //Individual child(childChromosome);
-    Individual child();
-    
-    return child;
+
+    Chromosome childChromosomes[N_OF_CHROMOSOMES] = {(childDistributionGenes), (childGenes)};
+    for(int i = 0; i < N_OF_CHROMOSOMES; i++)
+        chromosome[i] = childChromosomes[i];
+
 }
 
 double Individual::calculateFitness() {
-    //TODO: GENERALIZE
     return optimizedFunction(chromosome[0].getGene());
 }
 
@@ -59,6 +84,15 @@ double Individual::getFitness() {
     return fitness;
 }
 
-bool operator<(Individual& a, Individual& b) {
-    return a.getFitness() < b.getFitness();
+void Individual::setNormalizedFitness(double normalizedFitness) {
+    this->normalizedFitness = normalizedFitness;
+}
+
+double Individual::getNormalizedFitness(){
+    return normalizedFitness;
+}
+
+std::ostream& operator<<(std::ostream&os, Individual &individual) {
+    os << "Osobnik o chromosomie " << individual.getChromosome()[0] << " o wartości funkcji celu: " << individual.getFitness();
+    return os;
 }
