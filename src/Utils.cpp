@@ -10,7 +10,7 @@ double randomFloatInRange(double min, double max) {
     return uniDistribution(generator);
 }
 
-double standardCauchyDistribution() {
+double variableDistribution() {
     std::random_device rd;
     std::default_random_engine generator(rd());
     std::cauchy_distribution<double> cauchyDistribution(0.0, 1.0);
@@ -18,7 +18,7 @@ double standardCauchyDistribution() {
 }
 
 double optimizedFunction(double* x){
-    return -exp(-sqrt((x[0] * x[0] + x[1] * x[1]) / 2)) - exp((cos(2*M_PI*x[0]) + cos(2*M_PI*x[1]))/2) + 1 + exp(1);
+    return -20*exp(-0.2 * sqrt(0.5 * (x[0] * x[0] + x[1] * x[1]))) - exp(0.5 * (cos(2*M_PI*x[0]) + cos(2*M_PI*x[1]))) + 20  + M_E;
 }
 
 int randomIntInRange(int min, int max) {

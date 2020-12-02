@@ -4,17 +4,18 @@
 
 #define MAXIMIZATION 0
 
-#define ITERATIONS 1
+#define ITERATIONS 3
 
-#define MAX_GEN_VALUE 10
-#define MIN_GEN_VALUE -10
-#define MAX_SIGMA_VALUE 5
+#define MAX_X_Y_VALUE 100
+#define MIN_X_Y_VALUE -100
+
+#define MAX_SIGMA_VALUE 2
 #define MIN_SIGMA_VALUE 0.1
 
 
 
-#define MI 20
-#define LAMBDA 140
+#define MI 5
+#define LAMBDA 25
 
 //rho używane do selekcji progowej osobników do reprodukcji
 #define RHO 1.0
@@ -27,7 +28,7 @@
 
 
 
-class Population_lambdaplus1{
+class Population{
    
    std::vector<std::shared_ptr<Individual>> individuals;
    std::vector<std::shared_ptr<Individual>> temporaryGeneration;
@@ -35,16 +36,15 @@ class Population_lambdaplus1{
     std::vector<double> probabilityOfBeingChosen;
 
 
-    void breed_and_mutate();
-    void sort_and_cut();
+    void reproduce();
+    void selectNextGeneration();
     void selectForReproduction();
     void generateTemporaryGeneration();
     void calculateNormalizedFitness(std::vector<std::shared_ptr<Individual>> generation);
 
 public:
-    Population_lambdaplus1();
-    void newGeneration();
-    Individual simulate();
+    Population();
+    std::shared_ptr<Individual> simulate();
 
 };
 

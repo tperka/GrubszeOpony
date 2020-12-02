@@ -25,7 +25,7 @@ public:
     double getNormalizedFitness();
 };
 
-std::ostream& operator<<(std::ostream& os, Individual& individual);
+std::ostream& operator<<(std::ostream& os, std::shared_ptr<Individual>& individual);
 
 
 #endif
