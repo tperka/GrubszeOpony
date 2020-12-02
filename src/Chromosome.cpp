@@ -23,8 +23,8 @@ double* Chromosome::getGene() {
 std::ostream& operator<<(std::ostream& os, Chromosome chromosome) {
     double* gene = chromosome.getGene();
     for(int i = 0; i < DIMENSIONS; i++) {
-        if(i != 0)  os << ", ";
-        os << gene[i];
+        if(i != 0)  os << " ";
+            os << gene[i];
     }
     return os;
 }

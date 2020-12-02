@@ -2,10 +2,9 @@
 #include "Utils.hpp"
 #include <iostream>
 #include <memory>
-#include <algorithm>    /* sort */
-#include <iostream>
+#include <algorithm>    
 #include <cmath>
-
+#include <fstream>
 
 
 bool sort_by_fittnes(const std::shared_ptr<Individual> lhs, const std::shared_ptr<Individual> rhs)
@@ -23,19 +22,12 @@ void Population::selectNextGeneration()
     individuals.insert(individuals.end(), std::make_move_iterator(offspring.begin()), std::make_move_iterator(offspring.end()));
     //sortujemy, najlepsze osobniki są na początku
     sort(individuals.begin(), individuals.end(), sort_by_fittnes);
-
-    //obliczamy prawdopodobieństwo na podstawie stosunku wartości znormalizowanej funkcji celu do ich sumy (selekcja ruletkowa)
-    double sumOfFitness = 0;
-    for(auto i : individuals) {
-        sumOfFitness += i->getFitness();
-    }
-    // TODO: OGARNIJ PRAWDOPODOBIEŃSTWA
+    
+    //SELEKCJA PROGOWA zgodnie z tym, co było na wykładzie
+    double maxIndex = LAMBDA * RHO;
     probabilityOfBeingChosen.resize(individuals.size());
-    for(int i = 0; i < (int)individuals.size(); i++) {
-        probabilityOfBeingChosen[i] = individuals[i]->getFitness() / sumOfFitness;
-        //if(!MAXIMIZATION)
-        //    probabilityOfBeingChosen[i] = 1 - probabilityOfBeingChosen[i];
-        std::cout << "prawdopodobienstwo wyboru rowne" << probabilityOfBeingChosen[i] << std::endl;
+    for(int i = 0; i < maxIndex; ++i) {
+        probabilityOfBeingChosen[i] = 1/maxIndex;
     }
 
     /*
@@ -73,35 +65,15 @@ void Population::generateTemporaryGeneration() {
     }
 }
 
-void Population::calculateNormalizedFitness(std::vector<std::shared_ptr<Individual>> generation) {
-    //obliczanie średniej wartosci funkcji celu
-    double sumOfFitness = 0;
-    for(auto i : generation) {
-        sumOfFitness += i->getFitness();
-    }
-    double meanFitness = sumOfFitness / generation.size();
-
-    //obliczanie odchylenia standardowego funkcji celu
-    double varianceOfFitness = 0;
-    for(auto i : generation) {
-        varianceOfFitness += pow(i->getFitness() - meanFitness, 2);
-    }
-
-    double standardDeviationOfFitness = sqrt(varianceOfFitness);
-    //std::cout << "Prawdopodobienstwo wyboru osobnika to  " << probabilityOfBeingChosen << std::endl;
-    for(auto i : generation) {
-        i->setNormalizedFitness( (i->getFitness() - meanFitness) * RHO / standardDeviationOfFitness );
-    }
-}
 
 
-void Population::reproduce() //Funkcja bierze dwóch wyznaczonych rodziców i tworzy nowe dziecko
+void Population::reproduce()
 {
     offspring.clear();
     
     while(offspring.size() < LAMBDA)
     {
-        //wybierz losowych rodziców z wybranych do reprodukcji
+        //wybierz losowych rodziców
         int nOfPossibleParents = temporaryGeneration.size();
         int parent1Index = randomIntInRange(0, nOfPossibleParents - 1);
         int parent2Index = randomIntInRange(0, nOfPossibleParents - 1);
@@ -113,16 +85,27 @@ void Population::reproduce() //Funkcja bierze dwóch wyznaczonych rodziców i tw
 
         child->mutate();
 
-        offspring.push_back(child);
+        //sprawdzamy, czy utworzone dziecko nie wyszło poza obszar poszukiwań
+        bool isChildCorrect = true;
+        for(int i = 0; i < DIMENSIONS; ++i) {
+            if(child->getChromosome()[0].getGene()[i] > MAX_X_Y_VALUE || child->getChromosome()[0].getGene()[i] < MIN_X_Y_VALUE)
+                isChildCorrect = false;
+        }
+        
+        if(isChildCorrect)
+            offspring.push_back(child);
     }
 
 }
 
 
 
-std::shared_ptr<Individual> Population::simulate() {
+std::shared_ptr<Individual> Population::simulate(std::string fileName) {
 
-    //napełnianie tablicy populacją
+    std::ofstream resultFile;
+    resultFile.open(fileName);
+
+    //populację tworzymy stosując posiew równomierny
     for(int i=0; i < MI; ++i)
     {
         std::shared_ptr<Individual> tmp (new Individual());
@@ -131,7 +114,7 @@ std::shared_ptr<Individual> Population::simulate() {
 
     int generationsLeft = ITERATIONS;
 
-    while(generationsLeft >= 0) {
+    while(generationsLeft > 0) {
         
         generateTemporaryGeneration();
         
@@ -139,11 +122,11 @@ std::shared_ptr<Individual> Population::simulate() {
 
         selectNextGeneration();
         
-        std::cout << "Iteracja nr " << ITERATIONS - generationsLeft << " najlepszy osobnik to " << individuals[0]<< std::endl;
-
+        std::cout << "Iteracja nr " << ITERATIONS - generationsLeft + 1<< " najlepszy osobnik to (x y f_celu)" << individuals[0]<< std::endl;
+        resultFile << individuals[0] << std::endl;
         generationsLeft--;
     }
-
+    resultFile.close();
     return individuals[0];   //zwracamy najlepszego
 
 }

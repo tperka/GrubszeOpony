@@ -1,4 +1,5 @@
 #include "Utils.hpp"
+#include "Population.hpp"
 #include <random>
 #include <chrono>
 #include <iostream>
@@ -13,8 +14,13 @@ double randomFloatInRange(double min, double max) {
 double variableDistribution() {
     std::random_device rd;
     std::default_random_engine generator(rd());
-    std::cauchy_distribution<double> cauchyDistribution(0.0, 1.0);
-    return cauchyDistribution(generator);
+    if(USE_CAUCHY_DISTRIBUTION) {
+        std::cauchy_distribution<double> cauchyDistribution(0.0, 1.0);
+        return cauchyDistribution(generator);
+    } else {
+        std::normal_distribution<double> normalDistribution(0.0, 1.0);
+        return normalDistribution(generator);
+    }
 }
 
 double optimizedFunction(double* x){

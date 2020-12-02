@@ -8,7 +8,6 @@
 
 class Individual {
     double fitness;
-    double normalizedFitness;
     Chromosome chromosome[N_OF_CHROMOSOMES];
 
 public:
@@ -21,8 +20,7 @@ public:
     double calculateFitness();
     double getFitness();
     Chromosome* getChromosome();
-    void setNormalizedFitness(double normalizedFitness);
-    double getNormalizedFitness();
+
 };
 
 std::ostream& operator<<(std::ostream& os, std::shared_ptr<Individual>& individual);

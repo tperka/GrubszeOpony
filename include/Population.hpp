@@ -1,24 +1,25 @@
 #ifndef POPULATION_HPP
 #define POPULATION_HPP
 
-
+#define USE_CAUCHY_DISTRIBUTION 1
 #define MAXIMIZATION 0
 
-#define ITERATIONS 3
+#define ITERATIONS 20
 
-#define MAX_X_Y_VALUE 100
-#define MIN_X_Y_VALUE -100
+#define MAX_X_Y_VALUE 100000
+#define MIN_X_Y_VALUE -100000
 
 #define MAX_SIGMA_VALUE 2
 #define MIN_SIGMA_VALUE 0.1
 
 
+//proporcja zaproponowana na wykładzie
+#define MI 50
+#define LAMBDA 350
 
-#define MI 5
-#define LAMBDA 25
+//nacisk selekcyjny do selekcji progowej
+#define RHO 0.75
 
-//rho używane do selekcji progowej osobników do reprodukcji
-#define RHO 1.0
 
 
 #include "Individual.hpp"
@@ -40,11 +41,11 @@ class Population{
     void selectNextGeneration();
     void selectForReproduction();
     void generateTemporaryGeneration();
-    void calculateNormalizedFitness(std::vector<std::shared_ptr<Individual>> generation);
+
 
 public:
     Population();
-    std::shared_ptr<Individual> simulate();
+    std::shared_ptr<Individual> simulate(std::string fileName = "result.txt");
 
 };
 
