@@ -11,5 +11,5 @@ do
 	$((count++))
 done
 
-echo "scale=5; $sum / $count" | bc
 
+perl -E "say $sum/$count"

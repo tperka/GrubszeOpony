@@ -69,7 +69,7 @@ void Individual::mutate() {
         childGenes[i] = chromosome[0].getGene()[i] + childDistributionGenes[i] * ny_i;
     }
 
-    Chromosome childChromosomes[N_OF_CHROMOSOMES] = {(childDistributionGenes), (childGenes)};
+    Chromosome childChromosomes[N_OF_CHROMOSOMES] = {(childGenes), (childDistributionGenes)};
     for(int i = 0; i < N_OF_CHROMOSOMES; i++)
         chromosome[i] = childChromosomes[i];
     

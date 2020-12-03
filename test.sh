@@ -12,4 +12,5 @@ do
 done
 
 
+echo $count
 perl -E "say $sum/$count"

@@ -79,11 +79,12 @@ void Population::reproduce()
         int parent2Index = randomIntInRange(0, nOfPossibleParents - 1);
         std::shared_ptr<Individual> parent1 = temporaryGeneration[parent1Index];
         std::shared_ptr<Individual> parent2 = temporaryGeneration[parent2Index];
-        
+        std::cout << "rodzic1 " << parent1 << std::endl;
+        std::cout << "rodzic2 " << parent2 << std::endl;
         std::shared_ptr<Individual> child(new Individual(*(parent1->mate(parent2))));
-        
+std::cout << "Dziecko przed mutacją " << child << std::endl;
         child->mutate();
-
+std::cout << "Dziecko po mutacji " << child << std::endl;
         //sprawdzamy, czy utworzone dziecko nie wyszło poza obszar poszukiwań
         bool isChildCorrect = true;
         for(int i = 0; i < DIMENSIONS; ++i) {
