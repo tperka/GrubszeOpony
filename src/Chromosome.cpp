@@ -20,6 +20,12 @@ double* Chromosome::getGene() {
     return gene;
 }
 
+void Chromosome::setGene(double gene[DIMENSIONS]) {
+    for(int i = 0; i < DIMENSIONS; i++)
+        this->gene[i] = gene[i];
+    
+}
+
 std::ostream& operator<<(std::ostream& os, Chromosome chromosome) {
     double* gene = chromosome.getGene();
     for(int i = 0; i < DIMENSIONS; i++) {

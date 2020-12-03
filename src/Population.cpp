@@ -79,10 +79,9 @@ void Population::reproduce()
         int parent2Index = randomIntInRange(0, nOfPossibleParents - 1);
         std::shared_ptr<Individual> parent1 = temporaryGeneration[parent1Index];
         std::shared_ptr<Individual> parent2 = temporaryGeneration[parent2Index];
-
         
         std::shared_ptr<Individual> child(new Individual(*(parent1->mate(parent2))));
-
+        
         child->mutate();
 
         //sprawdzamy, czy utworzone dziecko nie wyszło poza obszar poszukiwań

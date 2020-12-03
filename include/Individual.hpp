@@ -3,6 +3,7 @@
 
 #include "Chromosome.hpp"
 #include <memory>
+
 #define N_OF_CHROMOSOMES 2
 
 

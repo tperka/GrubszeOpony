@@ -3,8 +3,13 @@
 #include "Utils.hpp"
 
 Individual::Individual() {
-    chromosome[0].generateRandomGenes(MIN_X_Y_VALUE, MAX_X_Y_VALUE);
+    // odkomentować dla posiewu jednostajnego
+    //chromosome[0].generateRandomGenes(MIN_X_Y_VALUE, MAX_X_Y_VALUE);
+    
     chromosome[1].generateRandomGenes(MIN_SIGMA_VALUE, MAX_SIGMA_VALUE);
+    //zakomaentować te dwie linijki dla posiewu jednostajnego
+    double startPoint[] = {START_POINT_X, START_POINT_Y};
+    chromosome[0].setGene(startPoint);
     
     fitness = calculateFitness();
 }
@@ -61,7 +66,7 @@ void Individual::mutate() {
         childDistributionGenes[i] = chromosome[N_OF_CHROMOSOMES - 1].getGene()[i] * exp(tauprim*ksi + tau*ksi_i);   //w naszym przypadku ostatni chromosom jest tablicą odchyleń standardowych rozkładów używanych do mutacji.
         
         ny_i = variableDistribution();
-        childGenes[i] = chromosome[0].getGene()[i] * childDistributionGenes[i] * ny_i;
+        childGenes[i] = chromosome[0].getGene()[i] + childDistributionGenes[i] * ny_i;
     }
 
     Chromosome childChromosomes[N_OF_CHROMOSOMES] = {(childDistributionGenes), (childGenes)};
