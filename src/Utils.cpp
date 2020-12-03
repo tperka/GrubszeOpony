@@ -11,6 +11,7 @@ double randomFloatInRange(double min, double max) {
     return uniDistribution(generator);
 }
 
+//konfigurowalna dystrubcja normalna lub cauch'yego
 double variableDistribution() {
     std::random_device rd;
     std::default_random_engine generator(rd());
@@ -23,6 +24,7 @@ double variableDistribution() {
     }
 }
 
+//funkcja którą będziemy optymalizować
 double optimizedFunction(double* x){
     return -20*exp(-0.2 * sqrt(0.5 * (x[0] * x[0] + x[1] * x[1]))) - exp(0.5 * (cos(2*M_PI*x[0]) + cos(2*M_PI*x[1]))) + 20  + M_E;
 }

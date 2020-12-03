@@ -7,7 +7,7 @@ Individual::Individual() {
     //chromosome[0].generateRandomGenes(MIN_X_Y_VALUE, MAX_X_Y_VALUE);
     
     chromosome[1].generateRandomGenes(MIN_SIGMA_VALUE, MAX_SIGMA_VALUE);
-    //zakomaentować te dwie linijki dla posiewu jednostajnego
+    //zakomentować te dwie linijki dla posiewu jednostajnego
     double startPoint[] = {START_POINT_X, START_POINT_Y};
     chromosome[0].setGene(startPoint);
     
@@ -53,12 +53,12 @@ std::shared_ptr<Individual> Individual::mate(std::shared_ptr<Individual> partner
 }
 
 void Individual::mutate() {
-    //strona 74 skryptu Podstawy Sztucznej Inteligencji autorstwa Pawła Wawrzyńskiego.
+    //strona 74 skryptu Podstawy Sztucznej Inteligencji autorstwa Pawła Wawrzyńskiego
     double childDistributionGenes[DIMENSIONS];
     double childGenes[DIMENSIONS];
     double tauprim = 1/sqrt(2*DIMENSIONS);
     double tau = 1/sqrt(sqrt(DIMENSIONS));
-    double ksi = variableDistribution();
+    double ksi = variableDistribution();    //używane do losowania dla każdego wymiaru wektora wspólnie
     double ksi_i, ny_i;     //używane do losowania dla każdego wymiaru wektora genów oddzielnie
 
     for(int i = 0; i < DIMENSIONS; i++) {

@@ -1,18 +1,18 @@
 #ifndef POPULATION_HPP
 #define POPULATION_HPP
 
-#define USE_CAUCHY_DISTRIBUTION 0
+#define USE_CAUCHY_DISTRIBUTION 1
 #define MAXIMIZATION 0
 
-#define ITERATIONS 1
+#define ITERATIONS 500
 
-#define START_POINT_X 10.0
-#define START_POINT_Y 10.0
+#define START_POINT_X 500.0
+#define START_POINT_Y 500.0
 
-#define MAX_X_Y_VALUE 100000
-#define MIN_X_Y_VALUE -100000
+#define MAX_X_Y_VALUE 1000.0
+#define MIN_X_Y_VALUE -1000.0
 
-#define MAX_SIGMA_VALUE 0.5
+#define MAX_SIGMA_VALUE 1.0
 #define MIN_SIGMA_VALUE 0.1
 
 
@@ -48,7 +48,8 @@ class Population{
 
 public:
     Population();
-    std::shared_ptr<Individual> simulate(std::string fileName = "result.txt");
+    std::shared_ptr<Individual> simulate(std::string fileName);
+    std::shared_ptr<Individual> simulate();
 
 };
 
